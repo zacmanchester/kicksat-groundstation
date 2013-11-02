@@ -1,0 +1,9 @@
+.DS_Store
+.localized
+.Trash
+Thumbs.db
+~*
+*~
+build
+top_block.py
+GNURadio/top_block.py
