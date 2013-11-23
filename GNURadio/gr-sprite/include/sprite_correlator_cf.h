@@ -25,7 +25,8 @@
 #include <gr_sync_block.h>
 #include <gri_fft.h>
 
-#define SPRITE_PRN_LENGTH 511
+#define M_SEQUENCE_LENGTH 511
+#define SPRITE_PRN_LENGTH 512
 
 class sprite_correlator_cf;
 typedef boost::shared_ptr<sprite_correlator_cf> sprite_correlator_cf_sptr;
@@ -57,8 +58,8 @@ class SPRITE_API sprite_correlator_cf : public gr_sync_block
 		
 	gri_fft_complex* m_fft;
 		
-	static int mseq1[SPRITE_PRN_LENGTH];
-	static int mseq2[SPRITE_PRN_LENGTH];
+	static int mseq1[M_SEQUENCE_LENGTH];
+	static int mseq2[M_SEQUENCE_LENGTH];
 
  public:
 	~sprite_correlator_cf ();

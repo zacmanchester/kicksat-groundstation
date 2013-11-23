@@ -66,7 +66,7 @@ void sprite_correlator_cf::generate_prn(int prn_id)
 	if(prn_id == -2)
 	{	
 		//Deep copy M-sequence
-		for (int k = 0; k < SPRITE_PRN_LENGTH; k++)
+		for (int k = 0; k < M_SEQUENCE_LENGTH; k++)
 		{
 			m_prn[k] = mseq1[k];
 		}
@@ -74,23 +74,25 @@ void sprite_correlator_cf::generate_prn(int prn_id)
 	else if(prn_id == -1)
 	{	
 		//Deep copy M-sequence
-		for (int k = 0; k < SPRITE_PRN_LENGTH; k++)
+		for (int k = 0; k < M_SEQUENCE_LENGTH; k++)
 		{
 			m_prn[k] = mseq2[k];
 		}
 	}
-	else //if(prn_id >= 0 && prn_id < SPRITE_PRN_LENGTH)
+	else //if(prn_id >= 0 && prn_id < M_SEQUENCE_LENGTH)
 	{	
 		//Generate Gold Codes by xor'ing 2 M-sequences in different phases
-		for (int k = 0; k < SPRITE_PRN_LENGTH-prn_id; k++)
+		for (int k = 0; k < M_SEQUENCE_LENGTH-prn_id; k++)
 		{
 			m_prn[k] = mseq1[k] ^ mseq2[k+prn_id];
 		}
-		for (int k = SPRITE_PRN_LENGTH-prn_id; k < SPRITE_PRN_LENGTH; k++)
+		for (int k = M_SEQUENCE_LENGTH-prn_id; k < M_SEQUENCE_LENGTH; k++)
 		{
-			m_prn[k] = mseq1[k] ^ mseq2[k-SPRITE_PRN_LENGTH+prn_id];
+			m_prn[k] = mseq1[k] ^ mseq2[k-M_SEQUENCE_LENGTH+prn_id];
 		}
 	}
+
+	m_prn[SPRITE_PRN_LENGTH-1] = 0; //To pad out the last byte, add a zero to the end
 }
 
 void sprite_correlator_cf::cc430_modulator(int* prnBits, gr_complex* baseBand)
