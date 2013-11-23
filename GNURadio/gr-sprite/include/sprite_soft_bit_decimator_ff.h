@@ -25,6 +25,8 @@
 #include <sprite_api.h>
 #include <gr_sync_decimator.h>
 
+ #define SPRITE_DECIM_RATE 256
+
 class sprite_soft_bit_decimator_ff;
 
 typedef boost::shared_ptr<sprite_soft_bit_decimator_ff> sprite_soft_bit_decimator_ff_sptr;
