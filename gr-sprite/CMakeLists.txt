@@ -83,6 +83,7 @@ set(GRC_BLOCKS_DIR      ${GR_PKG_DATA_DIR}/grc/blocks)
 ########################################################################
 # Find gnuradio build dependencies
 ########################################################################
+#find_package(GnuradioRuntime)
 set(GR_REQUIRED_COMPONENTS RUNTIME FFT)
 find_package(Gnuradio "3.7.0" REQUIRED)
 find_package(CppUnit)
