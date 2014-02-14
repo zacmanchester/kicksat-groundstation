@@ -38,7 +38,8 @@ function upload(response, request) {
 			//Copy file to permanent location, fix any wav format issues, then run receiver
 			var dateString = moment().format('X');
 			var filePath = "~/RadioUploads/"+dateString+".wav";
-			exec("cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath+" && "+"../SpriteDemodWeb.py "+filePath, function(error, stdout, stderr){
+			exec("cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath);
+			exec("../SpriteDemodWeb.py "+filePath, function(error, stdout, stderr){
 				console.log(stdout);
 				response.write(stdout);
 				response.end();
@@ -47,7 +48,7 @@ function upload(response, request) {
 			//Write this to the browser for people to look at while they wait
 			response.writeHead(200, {"Content-Type": "text/html"});
 			response.write("Upload Successful!<br/>");
-			response.write("Demodulating PRN Pair (2,3)...")
+			response.write("Demodulating PRN Pair (2,3)...<br/>")
 		}
 		else {
 			response.writeHead(200, {"Content-Type": "text/html"});
