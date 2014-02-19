@@ -2,6 +2,7 @@ var querystring = require("querystring");
 var fs = require("fs");
 var exec = require("child_process").exec;
 var formidable = require("formidable");
+
 var moment = require("moment");
 
 function start(response) {
@@ -29,6 +30,11 @@ function start(response) {
 function upload(response, request) {
 
 	console.log("Request handler 'upload' was called.");
+	response.writeHead(200, {"Content-Type": "text/html"});
+
+	response.write("Uploading ");
+
+
 	var demodData = "";
 	var form = new formidable.IncomingForm();
 	form.keepExtensions = true;
@@ -46,15 +52,19 @@ function upload(response, request) {
 			});
 
 			//Write this to the browser for people to look at while they wait
-			response.writeHead(200, {"Content-Type": "text/html"});
-			response.write("Upload Successful!<br/>");
+			response.write("<br/>Upload Successful!<br/>");
 			response.write("Demodulating PRN Pair (2,3)...<br/>")
 		}
 		else {
-			response.writeHead(200, {"Content-Type": "text/html"});
 			response.write("Bad file. Try again.");
 			response.end();
 		}
+	});
+
+	form.on('progress', function(bytesReceived, bytesExpected) {
+		var percent = 100*(bytesReceived/bytesExpected);
+		
+		
 	});
 
 }
