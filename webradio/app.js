@@ -57,12 +57,6 @@ function demod(request, response) {
 	response.writeHead(200, {"Content-Type": "text/html"});
 	response.write(demodPage);
 
-	// var mySocket;
-	// io.sockets.on('connection', function(socket) {
-	// 	console.log("Socket Connected");
-	// 	mySocket = socket;
-	// });
-
 	var demodData = "";
 
 	var form = new formidable.IncomingForm();
@@ -75,26 +69,41 @@ function demod(request, response) {
 		//var dateString = moment().format('X');
 		var fileDir = "~/RadioUploads/"+files.upload.hash;
 		var filePath = fileDir+"/Recording.wav";
-		fs.exists(path, function(exists) {
+		fs.exists(filePath, function(exists) {
 			if(!exists) {
-				exec("cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+path);
+				//Copy the .wav file and check it's validity with qwavheaderdump
+				exec("cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath, function(error, stdout, stderr) {
+					var lines = stdout.split('\n');
+					console.log(lines[1]);
+					console.log(lines[3]);
+					console.log(lines[8].split(' ')[2]);
+
+					if(lines[1] == riff: 'RIFF' && lines[3] == wave: 'WAVE') {
+						if(lines[8].split(' ')[2] == '250000') {
+							//File is a valid .wav with correct sample rate
+							response.write("Your file looks good. We'll get to work demodulating it and email you the results. Thanks!");
+						} else {
+							//File is a valid .wav with bad sample rate
+							response.write("Sorry, our website is only set up to handle .wav files with a sample rate of 250KHz. Email us if you need help.");
+						}
+						
+					}
+					else {
+						//File is not a valid .wav
+						response.write("The file you uploaded is not a valid .wav file. Please try again.");
+					}
+				});
 			}
+			else {
+				//Duplicate file upload
+				response.write("It looks you've already uploaded this file. Thanks!");
+			}
+
+			response.end();
 		});
 		
-		// exec("../SpriteDemodWeb.py "+filePath, function(error, stdout, stderr){
-		// 	console.log(stdout);
-		// 	response.write(stdout);
-		// 	response.end();
-		// });
 
-		//Write this to the browser for people to look at while they wait
-		response.write("Demodulating PRN Pair (2,3)...<br/>")
+		
 	});
-
-	//Sends the current upload progress back to the client throguh a socket
-	// form.on('progress', function(bytesReceived, bytesExpected) {
-	// 	mySocket.emit('progressFraction', { progressFraction: bytesReceived/bytesExpected });
-	// });
-
 }
 
