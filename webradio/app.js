@@ -78,7 +78,7 @@ function demod(request, response) {
 					console.log(lines[3]);
 					console.log(lines[8].split(' ')[2]);
 
-					if(lines[1] == riff: 'RIFF' && lines[3] == wave: 'WAVE') {
+					if(lines[1] == "riff: 'RIFF'" && lines[3] == "wave: 'WAVE'") {
 						if(lines[8].split(' ')[2] == '250000') {
 							//File is a valid .wav with correct sample rate
 							response.write("Your file looks good. We'll get to work demodulating it and email you the results. Thanks!");
