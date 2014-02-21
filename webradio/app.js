@@ -72,7 +72,8 @@ function demod(request, response) {
 		fs.exists(filePath, function(exists) {
 			if(!exists) {
 				//Copy the .wav file and check it's validity with qwavheaderdump
-				exec("mkdir -p "+filePath+" && cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath, function(error, stdout, stderr) {
+				exec("mkdir -p "+fileDir+" && cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath, function(error, stdout, stderr) {
+					console.log(stderr);
 					console.log(stdout);
 					var lines = stdout.split('\n');
 					console.log(lines[1]);
