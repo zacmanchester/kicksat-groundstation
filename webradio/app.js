@@ -55,7 +55,8 @@ function radio(request, response) {
 
 function demod(request, response) {
 	response.writeHead(200, {"Content-Type": "text/html"});
-	response.write(demodPage);
+	response.write("Upload Successful!</br>");
+	//response.write(demodPage);
 
 	var demodData = "";
 
