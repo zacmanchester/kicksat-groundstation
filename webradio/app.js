@@ -5,7 +5,7 @@ var querystring = require("querystring");
 var fs = require("fs");
 var exec = require("child_process").exec;
 var formidable = require("formidable");
-var moment = require("moment");
+//var moment = require("moment");
 
 //Load HTML from disk
 var indexPage = fs.readFileSync("html/index.html");
@@ -53,54 +53,41 @@ function radio(request, response) {
 function demod(request, response) {
 	response.writeHead(200, {"Content-Type": "text/html"});
 	response.write("Upload Successful!</br>");
-	//response.write(demodPage);
-
-	var demodData = "";
 
 	var form = new formidable.IncomingForm();
 	form.keepExtensions = true;
-	form.hash = 'md5';
+	form.hash = 'sha1';
 	form.parse(request, function(error, fields, files) {
 		//Copy file to permanent location, fix any .wav format issues, then run receiver
-		console.log(files.upload.path);
-		console.log(files.upload.hash);
-		var fileDir = "~/RadioUploads/"+files.upload.hash;
+		var fileDir = "/home/zacman/RadioUploads/"+files.upload.hash;
 		var filePath = fileDir+"/Recording.wav";
 		fs.exists(filePath, function(exists) {
 			if(!exists) {
 				//Copy the .wav file and check it's validity with qwavheaderdump
 				exec("mkdir -p "+fileDir+" && cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath, function(error, stdout, stderr) {
-					console.log(stderr);
-					console.log(stdout);
-					var lines = stdout.split('\n');
-					console.log(lines[1]);
-					console.log(lines[3]);
-					console.log(lines[8].split(' ')[2]);
 
-					if(lines[1] == "riff: 'RIFF'" && lines[3] == "wave: 'WAVE'") {
-						if(lines[8].split(' ')[2] == '250000') {
+					var lines = stdout.split('\n');
+
+					if(lines[1].trim() == "riff: 'RIFF'" && lines[3].trim() == "wave: 'WAVE'") {
+						if(lines[8].trim() == "sample rate: 250000") {
 							//File is a valid .wav with correct sample rate
-							response.write("Your file looks good. We'll get to work demodulating it and email you the results. Thanks!");
+							response.end("Your file looks good. We'll get to work demodulating it and email you the results. Thanks!");
 						} else {
 							//File is a valid .wav with bad sample rate
-							response.write("Sorry, our website is only set up to handle .wav files with a sample rate of 250KHz. Email us if you need help.");
+							response.end("Sorry, this website is only set up to handle .wav files with a sample rate of 250KHz. Email us if you need help.");
 						}
-						
 					}
 					else {
 						//File is not a valid .wav
-						response.write("The file you uploaded is not a valid .wav file. Please try again.");
+						response.end("The file you uploaded is not a valid .wav file. Please try again.");
 					}
 				});
 			}
 			else {
 				//Duplicate file upload
-				response.write("It looks you've already uploaded this file. Thanks!");
+				response.end("It looks you've already uploaded this file. We'll email you when we finish demodulating it.");
 			}
 		});
-		
-
-		
 	});
 }
 
