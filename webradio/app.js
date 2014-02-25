@@ -38,9 +38,6 @@ function onRequest(request, response) {
 //Start HTTP server
 var server = http.createServer(onRequest).listen(8888);
 
-//Start Socket.io server
-//var io = require("socket.io").listen(server);
-
 function index(request, response) {
 	response.writeHead(200, {"Content-Type": "text/html"});
 	response.write(indexPage);
@@ -67,7 +64,6 @@ function demod(request, response) {
 		//Copy file to permanent location, fix any .wav format issues, then run receiver
 		console.log(files.upload.path);
 		console.log(files.upload.hash);
-		//var dateString = moment().format('X');
 		var fileDir = "~/RadioUploads/"+files.upload.hash;
 		var filePath = fileDir+"/Recording.wav";
 		fs.exists(filePath, function(exists) {
@@ -101,8 +97,6 @@ function demod(request, response) {
 				//Duplicate file upload
 				response.write("It looks you've already uploaded this file. Thanks!");
 			}
-
-			response.end();
 		});
 		
 
