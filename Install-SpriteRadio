@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# Script to install GNURadio and dependencies for Sprite receiver on Ubuntu-based systems
+
+
+# Install prerequisite packages
+#
+sudo apt-get install g++ cmake git libboost-all-dev libusb-1.0-0 libusb-1.0-0-dev libfftw3-dev swig python-numpy libjack0 python-qwt5-qt4
+
+# Make a directory to download everything into
+#
+mkdir ~/SpriteRadioTmp
+
+# Install GNURadio Package from Ettus. Handle 64 bit Ubuntu 12.04 LTS or 13.10 and equivalent Linux Mint versions
+#
+case `grep DISTRIB_RELEASE /etc/lsb-release` in
+*12.04*|*13*)
+	cd ~/SpriteRadioTmp && wget http://files.ettus.com/binaries/uhd_stable/uhd_003.007.000-release/uhd_003.007.000-1-stable_Ubuntu-12.04-x86_64.deb && sudo dpkg -i uhd_003.007.000-1-stable_Ubuntu-12.04-x86_64.deb
+	cd ~/SpriteRadioTmp && wget http://files.ettus.com/binaries/gnuradio/gnuradio_v3.7.2.1/gnuradio_3.7.2.1_Ubuntu-12.04-x86_64.deb && sudo dpkg -i gnuradio_3.7.2.1_Ubuntu-12.04-x86_64.deb
+	;;
+*13.10*|*16*)
+	cd ~/SpriteRadioTmp && wget http://files.ettus.com/binaries/uhd_stable/uhd_003.007.000-release/uhd_003.007.000-1-stable_Ubuntu-13.10-x86_64.deb && sudo dpkg -i uhd_003.007.000-1-stable_Ubuntu-13.10-x86_64.deb
+	cd ~/SpriteRadioTmp && wget http://files.ettus.com/binaries/gnuradio/gnuradio_v3.7.2.1/gnuradio_3.7.2.1_Ubuntu-13.10-x86_64.deb && sudo dpkg -i gnuradio_3.7.2.1_Ubuntu-13.10-x86_64.deb
+	;;
+esac
+
+# Install RTL-SDR Driver
+#
+cd ~/SpriteRadioTmp && git clone --progress git://git.osmocom.org/rtl-sdr.git && cd rtl-sdr && mkdir build && cd build && cmake .. -DINSTALL_UDEV_RULES=ON && make && sudo make install
+
+
+# Install RTL-SDR GNURadio Block
+#
+cd ~/SpriteRadioTmp && git clone --progress git://git.osmocom.org/gr-osmosdr && cd gr-osmosdr && mkdir build && cd build && cmake .. && make && sudo make install
+
+
+# Install Sprite GNURadio Blocks
+#
+cd ~/SpriteRadioTmp && git clone --progress git://github.com/zacinaction/kicksat-groundstation && cd kicksat-groundstation/gr-sprite && mkdir build && cd build && cmake .. && make && sudo make install && sudo ldconfig
+
+
+# Add GNURadio config file telling GRC where to look for new blocks 
+# 
+if [ ! -d ~/.gnuradio ]; then
+	mkdir ~/.gnuradio
+fi
+echo -e "[grc]\nlocal_blocks_path=/usr/local/share/gnuradio/grc/blocks" >> ~/.gnuradio/config.conf
+
+# Delete downloaded files
+#
+rm -Rf ~/SpriteRadioTmp
+
+exit 0
+
