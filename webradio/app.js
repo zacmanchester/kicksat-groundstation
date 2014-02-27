@@ -64,25 +64,33 @@ function demod(request, response) {
 		var filePath = fileDir+"/Recording.wav";
 		fs.exists(filePath, function(exists) {
 			if(!exists) {
-				//Copy the .wav file and check it's validity with qwavheaderdump
-				exec("mkdir -p "+fileDir+" && cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath, function(error, stdout, stderr) {
+				if(files.upload.path[-4] == ".wav") {
+					//Copy the .wav file and check it's validity with qwavheaderdump
+					exec("mkdir -p "+fileDir+" && cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath, function(error, stdout, stderr) {
 
-					var lines = stdout.split('\n');
+						var lines = stdout.split('\n');
 
-					if(lines[1].trim() == "riff: 'RIFF'" && lines[3].trim() == "wave: 'WAVE'") {
-						if(lines[8].trim() == "sample rate: 250000") {
-							//File is a valid .wav with correct sample rate
-							response.end("Your file looks good. We'll get to work demodulating it and email you the results. Thanks!");
-						} else {
-							//File is a valid .wav with bad sample rate
-							response.end("Sorry, this website is only set up to handle .wav files with a sample rate of 250KHz. Email us if you need help.");
+						if(lines[1].trim() == "riff: 'RIFF'" && lines[3].trim() == "wave: 'WAVE'") {
+							if(lines[8].trim() == "sample rate: 250000") {
+								//File is a valid .wav with correct sample rate
+								response.end("Your file looks good. We'll get to work demodulating it and email you the results. Thanks!");
+							} else {
+								//File is a valid .wav with bad sample rate
+								response.end("Sorry, this website is only set up to handle .wav files with a sample rate of 250KHz. Email us if you need help.");
+							}
 						}
-					}
-					else {
-						//File is not a valid .wav
-						response.end("The file you uploaded is not a valid .wav file. Please try again.");
-					}
-				});
+						else {
+							//File is not a valid .wav
+							response.end("The file you uploaded is not a valid .wav file. Please try again.");
+							exec("rm -R fileDir", function(error, stdout, stderr) {});
+						}
+					});
+				}
+				else {
+					//File is not a valid .wav
+					response.end("The file you uploaded is not a valid .wav file. Please try again.");
+					exec("rm -R fileDir", function(error, stdout, stderr) {});
+				}
 			}
 			else {
 				//Duplicate file upload
