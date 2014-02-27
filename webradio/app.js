@@ -57,6 +57,7 @@ function demod(request, response) {
 	var form = new formidable.IncomingForm();
 	form.keepExtensions = true;
 	form.hash = 'sha1';
+	form.uploadDir = "/tmp";
 	form.parse(request, function(error, fields, files) {
 		//Copy file to permanent location, fix any .wav format issues, then run receiver
 		var fileDir = "/home/zacman/RadioUploads/"+files.upload.hash;
