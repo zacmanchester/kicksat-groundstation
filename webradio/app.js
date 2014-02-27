@@ -64,8 +64,9 @@ function demod(request, response) {
 		var filePath = fileDir+"/Recording.wav";
 		fs.exists(filePath, function(exists) {
 			if(!exists) {
-				if(files.upload.path[-4] == ".wav") {
+				if(files.upload.path.substr(-4,4) == ".wav") {
 					//Copy the .wav file and check it's validity with qwavheaderdump
+					console.log(fields);
 					exec("mkdir -p "+fileDir+" && cp "+files.upload.path+" "+filePath+" && "+"qwavheaderdump -F "+filePath, function(error, stdout, stderr) {
 
 						var lines = stdout.split('\n');
