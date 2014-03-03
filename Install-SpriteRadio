@@ -14,11 +14,11 @@ mkdir ~/SpriteRadioTmp
 # Install GNURadio Package from Ettus. Handle 64 bit Ubuntu 12.04 LTS or 13.10 and equivalent Linux Mint versions
 #
 case `grep DISTRIB_RELEASE /etc/lsb-release` in
-*12.04*|*13*)
+*12.04|*13)
 	cd ~/SpriteRadioTmp && wget http://files.ettus.com/binaries/uhd_stable/uhd_003.007.000-release/uhd_003.007.000-1-stable_Ubuntu-12.04-x86_64.deb && sudo dpkg -i uhd_003.007.000-1-stable_Ubuntu-12.04-x86_64.deb
 	cd ~/SpriteRadioTmp && wget http://files.ettus.com/binaries/gnuradio/gnuradio_v3.7.2.1/gnuradio_3.7.2.1_Ubuntu-12.04-x86_64.deb && sudo dpkg -i gnuradio_3.7.2.1_Ubuntu-12.04-x86_64.deb
 	;;
-*13.10*|*16*)
+*13.10|*16)
 	cd ~/SpriteRadioTmp && wget http://files.ettus.com/binaries/uhd_stable/uhd_003.007.000-release/uhd_003.007.000-1-stable_Ubuntu-13.10-x86_64.deb && sudo dpkg -i uhd_003.007.000-1-stable_Ubuntu-13.10-x86_64.deb
 	cd ~/SpriteRadioTmp && wget http://files.ettus.com/binaries/gnuradio/gnuradio_v3.7.2.1/gnuradio_3.7.2.1_Ubuntu-13.10-x86_64.deb && sudo dpkg -i gnuradio_3.7.2.1_Ubuntu-13.10-x86_64.deb
 	;;
@@ -48,7 +48,7 @@ echo -e "[grc]\nlocal_blocks_path=/usr/local/share/gnuradio/grc/blocks" >> ~/.gn
 
 # Delete downloaded files
 #
-rm -Rf ~/SpriteRadioTmp
+#rm -Rf ~/SpriteRadioTmp
 
 exit 0
 
