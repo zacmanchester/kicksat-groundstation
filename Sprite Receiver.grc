@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='ASCII'?>
 <flow_graph>
-  <timestamp>Fri Feb 21 11:48:15 2014</timestamp>
+  <timestamp>Tue Mar  4 21:02:46 2014</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -526,10 +526,10 @@
     </param>
   </block>
   <block>
-    <key>sprite_sprite_decoder_f</key>
+    <key>sprite_soft_decoder_f</key>
     <param>
       <key>id</key>
-      <value>sprite_sprite_decoder_f_0</value>
+      <value>sprite_soft_decoder_f_0</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -541,7 +541,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(693, 450)</value>
+      <value>(716, 399)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -549,14 +549,70 @@
     </param>
   </block>
   <block>
-    <key>sprite_soft_decoder_f</key>
+    <key>wxgui_scopesink2</key>
     <param>
       <key>id</key>
-      <value>sprite_soft_decoder_f_0</value>
+      <value>wxgui_scopesink2_0_0</value>
     </param>
     <param>
       <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>title</key>
+      <value>Correlator Output</value>
+    </param>
+    <param>
+      <key>samp_rate</key>
+      <value>chip_rate/256</value>
+    </param>
+    <param>
+      <key>v_scale</key>
+      <value>200</value>
+    </param>
+    <param>
+      <key>v_offset</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>t_scale</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>ac_couple</key>
       <value>False</value>
+    </param>
+    <param>
+      <key>xy_mode</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>num_inputs</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>win_size</key>
+      <value></value>
+    </param>
+    <param>
+      <key>grid_pos</key>
+      <value></value>
+    </param>
+    <param>
+      <key>notebook</key>
+      <value></value>
+    </param>
+    <param>
+      <key>trig_mode</key>
+      <value>wxgui.TRIG_MODE_NORM</value>
+    </param>
+    <param>
+      <key>y_axis_label</key>
+      <value>Counts</value>
     </param>
     <param>
       <key>affinity</key>
@@ -564,7 +620,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(705, 399)</value>
+      <value>(831, 296)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -579,7 +635,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>type</key>
@@ -650,85 +706,6 @@
       <value>0</value>
     </param>
   </block>
-  <block>
-    <key>wxgui_scopesink2</key>
-    <param>
-      <key>id</key>
-      <value>wxgui_scopesink2_0_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>title</key>
-      <value>Decimator Output</value>
-    </param>
-    <param>
-      <key>samp_rate</key>
-      <value>chip_rate/256</value>
-    </param>
-    <param>
-      <key>v_scale</key>
-      <value>200</value>
-    </param>
-    <param>
-      <key>v_offset</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>t_scale</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>ac_couple</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>xy_mode</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>num_inputs</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>win_size</key>
-      <value></value>
-    </param>
-    <param>
-      <key>grid_pos</key>
-      <value></value>
-    </param>
-    <param>
-      <key>notebook</key>
-      <value></value>
-    </param>
-    <param>
-      <key>trig_mode</key>
-      <value>wxgui.TRIG_MODE_NORM</value>
-    </param>
-    <param>
-      <key>y_axis_label</key>
-      <value>Counts</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(831, 296)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
   <connection>
     <source_block_id>rtlsdr_source_0</source_block_id>
     <sink_block_id>rational_resampler_xxx_0</sink_block_id>
@@ -782,11 +759,5 @@
     <sink_block_id>blocks_sub_xx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>sprite_peak_decimator_ff_0</source_block_id>
-    <sink_block_id>sprite_sprite_decoder_f_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
   </connection>
 </flow_graph>
