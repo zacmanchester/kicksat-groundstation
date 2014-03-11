@@ -5,7 +5,7 @@
 
 # Install prerequisite packages
 #
-sudo apt-get install g++ cmake libcppunit-dev git libboost-all-dev liblog4cpp5-dev gsl-bin libusb-1.0-0 libusb-1.0-0-dev libfftw3-dev swig python-numpy python-lxml python-cheetah python-wxgtk2.8 libjack0 python-qwt5-qt4
+sudo apt-get install g++ cmake libcppunit-dev git libboost-all-dev liblog4cpp5-dev gsl-bin libusb-1.0-0 libusb-1.0-0-dev libfftw3-dev swig python-numpy python-lxml python-cheetah python-wxgtk2.8 libjack0 python-qwt5-qt4 python-opengl
 
 # Make a directory to download everything into
 #
