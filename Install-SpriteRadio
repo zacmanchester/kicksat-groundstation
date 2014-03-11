@@ -28,16 +28,17 @@ esac
 #
 cd ~/SpriteRadioTmp && git clone --progress git://git.osmocom.org/rtl-sdr.git && cd rtl-sdr && mkdir build && cd build && cmake .. -DINSTALL_UDEV_RULES=ON && make && sudo make install
 
+# Install Funcube Pro+ Driver
+#
+cd ~/SpriteRadioTmp && git clone --progress git://github.com/dl1ksv/gr-fcdproplus && cd gr-fcdproplus && mkdir build && cd build && cmake .. && make && sudo make install
 
 # Install RTL-SDR GNURadio Block
 #
 cd ~/SpriteRadioTmp && git clone --progress git://git.osmocom.org/gr-osmosdr && cd gr-osmosdr && mkdir build && cd build && cmake .. && make && sudo make install
 
-
 # Install Sprite GNURadio Blocks
 #
 cd ~/SpriteRadioTmp && git clone --progress git://github.com/zacinaction/kicksat-groundstation && cd kicksat-groundstation/gr-sprite && mkdir build && cd build && cmake .. && make && sudo make install && sudo ldconfig
-
 
 # Add GNURadio config file telling GRC where to look for new blocks 
 # 
