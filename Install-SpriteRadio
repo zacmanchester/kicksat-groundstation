@@ -73,6 +73,13 @@ sudo sh -c 'echo "# Udev rules for the Funcube Dongle Pro (0xfb56) and Pro+ (0xf
 # Install GNURadio Launcher Icon
 sudo /usr/local/libexec/gnuradio/grc_setup_freedesktop install
 
+# Install GQRX Launcher Icon
+sudo mkdir -p /usr/local/share/gqrx/freedesktop
+cd /usr/local/share/gqrx/freedesktop
+sudo cp ~/SpriteRadioTmp/gqrx/icons/scope.svg scope.svg
+sudo sh -c 'echo "[Desktop Entry]\nVersion=1.0\nType=Application\nName=GQRX\nExec=gqrx\nCategories=Development;\nIcon=/usr/local/share/gqrx/freedesktop/scope.svg" >> gqrx.desktop'
+sudo desktop-file-install gqrx.desktop
+
 # Delete downloaded files
 rm -Rf ~/SpriteRadioTmp
 
