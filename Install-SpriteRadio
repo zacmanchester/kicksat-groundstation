@@ -70,6 +70,9 @@ echo -e "[grc]\nlocal_blocks_path=/usr/local/share/gnuradio/grc/blocks" >> ~/.gn
 # Add Udev rules for Funcube dongles
 sudo sh -c 'echo "# Udev rules for the Funcube Dongle Pro (0xfb56) and Pro+ (0xfb31)\n\n# HIDAPI/libusb:\nSUBSYSTEMS=="usb" ATTRS{idVendor}=="04d8" ATTRS{idProduct}=="fb56" MODE:="0666"\nSUBSYSTEMS=="usb" ATTRS{idVendor}=="04d8" ATTRS{idProduct}=="fb31" MODE:="0666"\n\n# HIDAPI/hidraw:\nKERNEL=="hidraw*", ATTRS{busnum}=="1", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="fb56", MODE="0666"\nKERNEL=="hidraw*", ATTRS{busnum}=="1", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="fb31", MODE="0666"\n\n" >> /etc/udev/rules.d/funcube.rules'
 
+# Install GNURadio Launcher Icon
+sudo /usr/local/libexec/gnuradio/grc_setup_freedesktop install
+
 # Delete downloaded files
 rm -Rf ~/SpriteRadioTmp
 
