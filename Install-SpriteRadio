@@ -6,13 +6,22 @@
 # Make a directory to download everything into
 mkdir ~/SpriteRadioTmp
 
+# Update package index
+sudo apt-get update
+
 case `grep DISTRIB_RELEASE /etc/lsb-release` in
 *12.04|*13)
+	# Remove possibly problematic old stuff
+	sudo apt-get -y remove gnuradio gqrx
+
 	# Install prerequisite packages
 	sudo apt-get -y install git-core cmake  libtool g++ python-dev swig pkg-config libboost1.48-all-dev libusb-1.0-0-dev libfftw3-dev libcppunit-dev libgsl0-dev libusb-dev libsdl1.2-dev python-wxgtk2.8 python-numpy python-cheetah python-lxml python-qt4 python-qwt5-qt4 libxi-dev libqt4-opengl-dev libqwt5-qt4-dev libfontconfig1-dev libxrender-dev 
 	;;
 
 *13.10|*16)
+	# Remove possibly problematic old stuff
+	sudo apt-get -y remove gnuradio gqrx python-qwt5-qt4
+
 	# Install prerequisite packages
 	sudo apt-get -y install git-core cmake g++ python-dev swig pkg-config libfftw3-dev libusb-1.0-0-dev libboost1.53-all-dev libcppunit-dev libgsl0-dev libusb-dev libsdl1.2-dev python-wxgtk2.8 python-numpy python-cheetah python-lxml libxi-dev python-sip python-sip-dev libqt4-opengl-dev libqwt-dev libfontconfig1-dev libxrender-dev libgruel3.6.1
 	
@@ -44,22 +53,28 @@ case `grep DISTRIB_RELEASE /etc/lsb-release` in
 esac
 
 # Install GNURadio
-cd ~/SpriteRadioTmp && git clone --progress git://github.com/gnuradio/gnuradio && cd gnuradio && mkdir build && cd build && cmake .. && make && sudo make install
+cd ~/SpriteRadioTmp && git clone --progress git://github.com/gnuradio/gnuradio
+cd gnuradio && mkdir build && cd build && cmake .. && make && sudo make install
 
 # Install RTL-SDR Driver
-cd ~/SpriteRadioTmp && git clone --progress git://git.osmocom.org/rtl-sdr.git && cd rtl-sdr && mkdir build && cd build && cmake .. -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON && make && sudo make install
+cd ~/SpriteRadioTmp && git clone --progress git://git.osmocom.org/rtl-sdr.git
+cd rtl-sdr && mkdir build && cd build && cmake .. -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON && make && sudo make install
 
 # Install Funcube Pro+ Driver
-cd ~/SpriteRadioTmp && git clone --progress git://github.com/dl1ksv/gr-fcdproplus && cd gr-fcdproplus && mkdir build && cd build && cmake .. && make && sudo make install
+cd ~/SpriteRadioTmp && git clone --progress git://github.com/dl1ksv/gr-fcdproplus
+cd gr-fcdproplus && mkdir build && cd build && cmake .. && make && sudo make install
 
 # Install RTL-SDR GNURadio Block
-cd ~/SpriteRadioTmp && git clone --progress git://git.osmocom.org/gr-osmosdr && cd gr-osmosdr && mkdir build && cd build && cmake .. && make && sudo make install
+cd ~/SpriteRadioTmp && git clone --progress git://git.osmocom.org/gr-osmosdr
+cd gr-osmosdr && mkdir build && cd build && cmake .. && make && sudo make install
 
 # Install Sprite GNURadio Blocks
-cd ~/SpriteRadioTmp && git clone --progress git://github.com/zacinaction/kicksat-groundstation && cd kicksat-groundstation/gr-sprite && mkdir build && cd build && cmake .. && make && sudo make install && sudo ldconfig
+cd ~/SpriteRadioTmp && git clone --progress git://github.com/zacinaction/kicksat-groundstation
+cd kicksat-groundstation/gr-sprite && mkdir build && cd build && cmake .. && make && sudo make install && sudo ldconfig
 
 # Install GQRX
-cd ~/SpriteRadioTmp && git clone --progress git://github.com/csete/gqrx && cd gqrx && mkdir build && cd build && qmake .. && make && sudo make install
+cd ~/SpriteRadioTmp && git clone --progress git://github.com/csete/gqrx
+cd gqrx && mkdir build && cd build && qmake .. && make && sudo make install
 
 # Add GNURadio config file telling GRC where to look for new blocks 
 if [ ! -d ~/.gnuradio ]; then
