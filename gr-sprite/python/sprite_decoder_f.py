@@ -350,8 +350,8 @@ class sprite_decoder_f(gr.sync_block):
                 medE = np.median(self._energies)
                 #print str(medE) + "  \t" + str(energy1) + "\t" + str(energy2) + "\t" + str(energy3)
 
-                #If SNR > 10 and energy is a local max
-                if (energy2 > 10*medE) and (energy1 < energy2) and (energy3 < energy2):
+                #If SNR > 4 and energy is a local max
+                if (energy2 > 4*medE) and (energy1 < energy2) and (energy3 < energy2):
                     print(self.decode(vec), end='')
             else:
                 #Use the first half second of data (125 samples) to initialize the median calculation
