@@ -15,7 +15,7 @@ case `grep DISTRIB_RELEASE /etc/lsb-release` in
 	sudo apt-get -y remove gnuradio gqrx
 
 	# Install prerequisite packages
-	sudo apt-get -y install git-core cmake  libtool g++ python-dev swig pkg-config libboost1.48-all-dev libusb-1.0-0-dev libfftw3-dev libcppunit-dev libgsl0-dev libusb-dev libsdl1.2-dev python-wxgtk2.8 python-numpy python-cheetah python-lxml python-qt4 python-qwt5-qt4 libxi-dev libqt4-opengl-dev libqwt5-qt4-dev libfontconfig1-dev libxrender-dev 
+	sudo apt-get -y install git-core cmake  libtool g++ python-dev swig pkg-config libboost1.48-all-dev libusb-1.0-0-dev libfftw3-dev libcppunit-dev libgsl0-dev libusb-dev libsdl1.2-dev python-wxgtk2.8 python-numpy python-cheetah python-lxml python-opengl python-qt4 python-qwt5-qt4 libxi-dev libqt4-opengl-dev libqwt5-qt4-dev libfontconfig1-dev libxrender-dev 
 	;;
 
 *13.10|*16)
@@ -23,7 +23,7 @@ case `grep DISTRIB_RELEASE /etc/lsb-release` in
 	sudo apt-get -y remove gnuradio gqrx python-qwt5-qt4
 
 	# Install prerequisite packages
-	sudo apt-get -y install git-core cmake g++ python-dev swig pkg-config libfftw3-dev libusb-1.0-0-dev libboost1.53-all-dev libcppunit-dev libgsl0-dev libusb-dev libsdl1.2-dev python-wxgtk2.8 python-numpy python-cheetah python-lxml libxi-dev python-sip python-sip-dev libqt4-opengl-dev libqwt-dev libfontconfig1-dev libxrender-dev libgruel3.6.1
+	sudo apt-get -y install git-core cmake g++ python-dev swig pkg-config libfftw3-dev libusb-1.0-0-dev libboost1.53-all-dev libcppunit-dev libgsl0-dev libusb-dev libsdl1.2-dev python-wxgtk2.8 python-numpy python-cheetah python-lxml python-opengl libxi-dev python-sip python-sip-dev libqt4-opengl-dev libqwt-dev libfontconfig1-dev libxrender-dev libgruel3.6.1
 	
 	# Make a directory to install PyQT and PyQWT
 	sudo mkdir /opt/qt
