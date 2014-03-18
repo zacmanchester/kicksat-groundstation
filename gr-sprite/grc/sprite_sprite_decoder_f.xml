@@ -4,13 +4,15 @@
   <key>sprite_sprite_decoder_f</key>
   <category>Sprite</category>
   <import>import sprite</import>
-  <make>sprite.sprite_decoder_f()</make>
+  <make>sprite.sprite_decoder_f($snr_threshold)</make>
 
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
+  <param>
+    <name>SNR Threshold</name>
+    <key>snr_threshold</key>
+    <value>4.0</value>
+    <type>real</type>
+  </param>
+
   <sink>
     <name>in</name>
     <type>float</type>

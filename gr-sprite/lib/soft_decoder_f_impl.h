@@ -34,6 +34,7 @@ namespace gr {
     
       int m_energy_counter;
       int m_initialized;
+      float m_snr_threshold;
       float m_squares[48];
       float m_energies[125];
       float m_buffer[7][22];
@@ -42,7 +43,7 @@ namespace gr {
       static float s_C[256][22];
 
      public:
-      soft_decoder_f_impl();
+      soft_decoder_f_impl(float snr_threshold);
       ~soft_decoder_f_impl();
 
       // Where all the action really happens

@@ -27,10 +27,12 @@ class sprite_decoder_f(gr.sync_block):
     """
     docstring for block sprite_decoder_f
     """
-    def __init__(self):
+    def __init__(self, snr_threshold):
         gr.sync_block.__init__(self,
             name="sprite_decoder_f",
             in_sig=[np.float32], out_sig=[])
+
+        self.snr_threshold = snr_threshold
 
         self.set_history(48)
         self.set_output_multiple(2)
@@ -350,8 +352,8 @@ class sprite_decoder_f(gr.sync_block):
                 medE = np.median(self._energies)
                 #print str(medE) + "  \t" + str(energy1) + "\t" + str(energy2) + "\t" + str(energy3)
 
-                #If SNR > 4 and energy is a local max
-                if (energy2 > 4*medE) and (energy1 < energy2) and (energy3 < energy2):
+                #If SNR > threshold and energy is a local max
+                if (energy2 > self.snr_threshold*medE) and (energy1 < energy2) and (energy3 < energy2):
                     print(self.decode(vec), end='')
             else:
                 #Use the first half second of data (125 samples) to initialize the median calculation
