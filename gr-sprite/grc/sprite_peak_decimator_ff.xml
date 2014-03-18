@@ -4,7 +4,14 @@
   <key>sprite_peak_decimator_ff</key>
   <category>Sprite</category>
   <import>import sprite</import>
-  <make>sprite.peak_decimator_ff()</make>
+  <make>sprite.peak_decimator_ff($sps)</make>
+
+  <param>
+    <name>Samples Per Chip</name>
+    <key>sps</key>
+    <value>1</value>
+    <type>int</type>
+  </param>
 
   <!-- Make one 'sink' node per input. Sub-nodes:
        * name (an identifier for the GUI)

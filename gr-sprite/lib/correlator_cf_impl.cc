@@ -35,31 +35,38 @@ namespace gr {
   namespace sprite {
 
     correlator_cf::sptr
-    correlator_cf::make(int prn_id)
+    correlator_cf::make(int prn_id, int sps)
     {
       return gnuradio::get_initial_sptr
-        (new correlator_cf_impl(prn_id));
+        (new correlator_cf_impl(prn_id, sps));
     }
 
     /*
      * The private constructor
      */
-    correlator_cf_impl::correlator_cf_impl(int prn_id)
+    correlator_cf_impl::correlator_cf_impl(int prn_id, int sps)
       : gr::sync_block("correlator_cf",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(float)))
     {
-      set_history(SPRITE_PRN_LENGTH);
+      m_sps = sps;
+
+      set_history(m_sps*SPRITE_PRN_LENGTH);
+
+      m_template = new gr_complex[m_sps*SPRITE_PRN_LENGTH];
+      m_buffer_real1 = new float[m_sps*SPRITE_PRN_LENGTH];
+      m_buffer_real2 = new float[m_sps*SPRITE_PRN_LENGTH];
+      m_buffer_real3 = new float[m_sps*SPRITE_PRN_LENGTH];
 
       generate_prn(prn_id);
   
-      cc430_modulator(m_prn, m_template);
-      for (int k = 0; k < SPRITE_PRN_LENGTH; k++)
+      cc430_modulator(m_prn, m_sps, m_template);
+      for (int k = 0; k < m_sps*SPRITE_PRN_LENGTH; k++)
       {
         m_template[k] = conj(m_template[k]);
       }
       
-      m_fft = new fft::fft_complex(SPRITE_PRN_LENGTH, true, 1);
+      m_fft = new fft::fft_complex(m_sps*SPRITE_PRN_LENGTH, true, 1);
       m_fft_buffer_in = m_fft->get_inbuf();
       m_fft_buffer_out = m_fft->get_outbuf();
     }
@@ -69,10 +76,14 @@ namespace gr {
      */
     correlator_cf_impl::~correlator_cf_impl()
     {
+      delete [] m_template;
+      delete [] m_buffer_real1;
+      delete [] m_buffer_real2;
+      delete [] m_buffer_real3;
     }
 
 
-    void correlator_cf_impl::cc430_modulator(int* prnBits, gr_complex* baseBand)
+    void correlator_cf_impl::cc430_modulator(int* prnBits, int sps, gr_complex* baseBand)
     {
       float* diffs = m_buffer_real1;
       float* iBB = m_buffer_real2;
@@ -94,26 +105,40 @@ namespace gr {
       }
       
       //Initialize with offset between I and Q
-      iBB[0] = 1;
-      qBB[0] = diffs[0];
-      qBB[1] = diffs[0];
+      for(int k = 0; k < sps; k++)
+      {
+        iBB[k] = 1;
+      }
+      for(int k = 0; k < 2*sps; k++)
+      {
+        qBB[k] = diffs[0];
+      }
       
+      //Generate Square Pulses
       for(int k = 1; k < SPRITE_PRN_LENGTH-2; k+=2)
       {
-        iBB[k] = diffs[k]*iBB[k-1];
-        iBB[k+1] = iBB[k];
+        for(int j = 0; j < 2*sps; j++)
+        {
+          iBB[sps*k+j] = diffs[k]*iBB[sps*k-1];
+        }
       }
-      iBB[SPRITE_PRN_LENGTH-1] = diffs[SPRITE_PRN_LENGTH-1]*iBB[SPRITE_PRN_LENGTH-2];
+      for(int j = 0; j < sps; j++)
+      {
+        iBB[sps*(SPRITE_PRN_LENGTH-1)+j] = diffs[SPRITE_PRN_LENGTH-1]*iBB[sps*(SPRITE_PRN_LENGTH-1)-1];
+      }
       
       for(int k = 2; k < SPRITE_PRN_LENGTH; k+=2)
       {
-        qBB[k] = diffs[k]*qBB[k-1];
-        qBB[k+1] = qBB[k];
+        for(int j = 0; j < 2*sps; j++)
+        {
+          qBB[sps*k+j] = diffs[k]*qBB[sps*k-1];
+        }
       }
       
-      for(int k = 0; k < SPRITE_PRN_LENGTH; k++)
+      //Apply sinusoidal pulse shaping
+      for(int k = 0; k < sps*SPRITE_PRN_LENGTH; k++)
       {
-        baseBand[k] = iBB[k]*cos(M_PI/2*k) + 1i*qBB[k]*sin(M_PI/2*k);
+        baseBand[k] = iBB[k]*cos(M_PI/2*k/sps) + 1i*qBB[k]*sin(M_PI/2*k/sps);
       }
     }
 
@@ -163,7 +188,7 @@ namespace gr {
         for(int k = 0; k < noutput_items; ++k) {
           
           //Pointwise multiply by baseband template and copy to fft input
-          for (int j = 0; j < SPRITE_PRN_LENGTH; ++j)
+          for (int j = 0; j < m_sps*SPRITE_PRN_LENGTH; ++j)
           {
             m_fft_buffer_in[j] = m_template[j]*in[j+k];
           }
@@ -174,7 +199,7 @@ namespace gr {
           //Find largest value in FFT
           float mag2 = real(m_fft_buffer_out[0]*conj(m_fft_buffer_out[0]));
           float max = mag2;
-          for (int j = 1; j < SPRITE_PRN_LENGTH; ++j)
+          for (int j = 1; j < m_sps*SPRITE_PRN_LENGTH; ++j)
           {
             mag2 = real(m_fft_buffer_out[j]*conj(m_fft_buffer_out[j]));
             if (mag2 > max)

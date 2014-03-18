@@ -30,12 +30,13 @@ namespace gr {
 
     class peak_decimator_ff_impl : public peak_decimator_ff
     {
-      private:  
+      private:
+        int m_sps;
         float m_min;
         float m_max;
 
       public:
-        peak_decimator_ff_impl();
+        peak_decimator_ff_impl(int sps);
         ~peak_decimator_ff_impl();
 
       // Where all the action really happens

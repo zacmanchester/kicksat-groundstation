@@ -37,15 +37,16 @@ namespace gr {
         static int mseq1[M_SEQUENCE_LENGTH];
         static int mseq2[M_SEQUENCE_LENGTH];
 
+        int m_sps;
         int m_prn[SPRITE_PRN_LENGTH];
         void generate_prn(int prn_id);
           
-        gr_complex m_template[SPRITE_PRN_LENGTH];
-        void cc430_modulator(int* prnBits, gr_complex* baseBand);
+        gr_complex* m_template;
+        void cc430_modulator(int* prnBits, int sps, gr_complex* baseBand);
           
-        float m_buffer_real1[SPRITE_PRN_LENGTH];
-        float m_buffer_real2[SPRITE_PRN_LENGTH];
-        float m_buffer_real3[SPRITE_PRN_LENGTH];
+        float* m_buffer_real1;
+        float* m_buffer_real2;
+        float* m_buffer_real3;
           
         gr_complex* m_fft_buffer_in;
         gr_complex* m_fft_buffer_out;
@@ -53,7 +54,7 @@ namespace gr {
         fft::fft_complex* m_fft;
 
       public:
-        correlator_cf_impl(int prn_id);
+        correlator_cf_impl(int prn_id, int sps);
         ~correlator_cf_impl();
 
         // Where all the action really happens
