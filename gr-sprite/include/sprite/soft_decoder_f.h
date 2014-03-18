@@ -46,7 +46,7 @@ namespace gr {
        * class. sprite::soft_decoder_f::make is the public interface for
        * creating new instances.
        */
-      static sptr make(float snr_threshold);
+      static sptr make();
     };
 
   } // namespace sprite

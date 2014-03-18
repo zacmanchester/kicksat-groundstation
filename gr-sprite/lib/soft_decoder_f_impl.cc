@@ -36,23 +36,22 @@ namespace gr {
   namespace sprite {
 
     soft_decoder_f::sptr
-    soft_decoder_f::make(float snr_threshold)
+    soft_decoder_f::make()
     {
       return gnuradio::get_initial_sptr
-        (new soft_decoder_f_impl(snr_threshold));
+        (new soft_decoder_f_impl());
     }
 
     /*
      * The private constructor
      */
-    soft_decoder_f_impl::soft_decoder_f_impl(float snr_threshold)
+    soft_decoder_f_impl::soft_decoder_f_impl()
       : gr::sync_block("soft_decoder_f",
               gr::io_signature::make(1, 1, sizeof(float)),
               gr::io_signature::make(0, 0, 0))
     {
       set_history(48);
       set_output_multiple(2);
-      m_snr_threshold = snr_threshold;
       m_energy_counter = 0;
       m_initialized = 0;
       m_median_buffer = vector<float>(63);
@@ -154,8 +153,8 @@ namespace gr {
             cout << medE;
             cout << "\n"; */
 
-            //If the SNR is > threshold and the energy is a local max
-            if(energy2 > m_snr_threshold*medE && energy1 < energy2 && energy3 < energy2)
+            //If the SNR is > 10 and the energy is a local max
+            if(energy2 > 10*medE && energy1 < energy2 && energy3 < energy2)
             {
               char result;
               float corr = softdecode(&in[k], &result);
