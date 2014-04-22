@@ -127,7 +127,7 @@ case `grep DISTRIB_RELEASE /etc/lsb-release` in
 	
 *14.04)
 	# Install prerequisite packages
-	sudo apt-get -y install gnuradio gnuradio-dev gr-fcdproplus gr-osmosdr gqrx-sdr git-core cmake g++ python-dev swig pkg-config libboost-all-dev libcppunit-dev 
+	sudo apt-get -y install gnuradio gnuradio-dev gr-fcdproplus gr-osmosdr gqrx-sdr git-core cmake g++ python-dev swig pkg-config libboost-all-dev libcppunit-dev liblog4cpp5-dev
 	
 	# Install Sprite GNURadio Blocks
 	cd ~/SpriteRadioTmp && git clone --progress git://github.com/zacinaction/kicksat-groundstation
