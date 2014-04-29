@@ -27,10 +27,16 @@ class sprite_decoder_f(gr.sync_block):
     """
     docstring for block sprite_decoder_f
     """
-    def __init__(self):
+    def __init__(self, outputFile=''):
         gr.sync_block.__init__(self,
             name="sprite_decoder_f",
             in_sig=[np.float32], out_sig=[])
+
+        if isinstance(outputFile, file):
+            self.output_file = outputFile
+            self.save_to_file = True
+        else:
+            self.save_to_file = False
 
         self.set_history(48)
         self.set_output_multiple(2)
@@ -352,7 +358,10 @@ class sprite_decoder_f(gr.sync_block):
 
                 #If SNR > 4 and energy is a local max
                 if (energy2 > 4*medE) and (energy1 < energy2) and (energy3 < energy2):
-                    print(self.decode(vec), end='')
+                    received_char = self.decode(vec)
+                    print(received_char, end='')
+                    if self.save_to_file:
+                        self.output_file.write(received_char)
             else:
                 #Use the first half second of data (125 samples) to initialize the median calculation
                 self._energies[self._energy_index] = energy1
